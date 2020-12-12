@@ -1,6 +1,10 @@
+// create unique ids
 const { v1: uuid } = require("uuid");
+
+// graphql and ApolloServer
 const { ApolloServer, gql } = require("apollo-server");
 
+// Test Data
 let authors = [
   {
     name: "Robert Martin",
@@ -26,11 +30,6 @@ let authors = [
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
 ];
-
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
- */
 
 let books = [
   {
@@ -84,6 +83,7 @@ let books = [
   },
 ];
 
+// Schema
 const typeDefs = gql`
   type Book {
     title: String!
@@ -95,6 +95,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     bookCount: Int!
+    born: Int
   }
 
   type Query {
@@ -113,6 +114,8 @@ const typeDefs = gql`
     ): Book!
 
     addAuthor(name: String!, bookCount: Int!, born: Int): Author!
+
+    editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
 
@@ -158,6 +161,21 @@ const resolvers = {
 
       return author;
     },
+
+    editAuthor: (root, args) => {
+      const authorBefore = authors.find(
+        (author) => author.name.toLowerCase() === args.name.toLowerCase()
+      );
+
+      if (!(authorBefore && args.setBornTo)) return null;
+
+      const authorAfter = { ...authorBefore, born: args.setBornTo };
+
+      authors = authors.concat(authorAfter);
+
+      return authorAfter;
+    },
+
     addBook: (root, args) => {
       const book = { ...args, id: uuid() };
 
