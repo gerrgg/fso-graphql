@@ -103,6 +103,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    findAuthor(name: String!): Author
   }
 
   type Mutation {
@@ -144,6 +145,10 @@ const resolvers = {
 
       return output;
     },
+    findAuthor: (root, args) =>
+      authors.find((author) => {
+        return author.name.toLowerCase() === args.name.toLowerCase();
+      }),
 
     allAuthors: () => authors,
   },
@@ -191,7 +196,6 @@ const resolvers = {
         };
 
         authors = authors.concat(author);
-        console.log(authors);
       }
 
       return book;
