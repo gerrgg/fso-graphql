@@ -168,17 +168,19 @@ const resolvers = {
     },
 
     editAuthor: (root, args) => {
-      const authorBefore = authors.find(
+      const author = authors.find(
         (author) => author.name.toLowerCase() === args.name.toLowerCase()
       );
 
-      if (!(authorBefore && args.setBornTo)) return null;
+      if (!author) return;
 
-      const authorAfter = { ...authorBefore, born: args.setBornTo };
+      const updatedAuthor = { ...author, born: args.setBornTo };
 
-      authors = authors.concat(authorAfter);
+      authors = authors.map((author) =>
+        author.name === args.name ? updatedAuthor : author
+      );
 
-      return authorAfter;
+      return author;
     },
 
     addBook: (root, args) => {
