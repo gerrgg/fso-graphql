@@ -76,7 +76,7 @@ const resolvers = {
       return books;
     },
     allAuthors: () => Author.find({}),
-    findAuthor: (root, args) => Author.find({ name: args.name }),
+    findAuthor: (root, args) => Author.findOne({ name: args.name }),
   },
 
   Author: {
@@ -92,8 +92,11 @@ const resolvers = {
       return author.save();
     },
 
-    editAuthor: (root, args) => {
-      const author = Author.find({ name: args.name });
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name });
+
+      if (!author) return null;
+
       author.born = args.born;
       return author.save();
     },
@@ -102,10 +105,11 @@ const resolvers = {
       let author = await Author.findOne({ name: args.author });
 
       if (!author) {
-        author = new Author({ name: args.name, born: null });
+        author = new Author({ name: args.author, born: null });
+        await author.save();
       }
 
-      const book = new Book({ ...args, author: author._id });
+      const book = new Book({ ...args, author });
 
       return book.save();
     },
