@@ -7,7 +7,7 @@ import NewBook from "./components/NewBook";
 import Header from "./components/Header";
 
 const App = () => {
-  const [page, setPage] = useState("authors");
+  const [page, setPage] = useState("add");
 
   return (
     <React.Fragment>

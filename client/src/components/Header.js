@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginRight: theme.spacing(1),
+  },
+  wrapper: {
     float: "right",
   },
 }));
@@ -40,30 +42,31 @@ export default function ButtonAppBar({ setPage }) {
             <Typography className={classes.logo} variant="h6">
               Library
             </Typography>
-            <IconButton
-              className={classes.button}
-              edge="end"
-              color="inherit"
-              onClick={() => setPage("authors")}
-            >
-              <PersonOutlineRounded />
-            </IconButton>
-            <IconButton
-              className={classes.button}
-              edge="end"
-              color="inherit"
-              onClick={() => setPage("books")}
-            >
-              <BookSharp />
-            </IconButton>
-            <IconButton
-              className={classes.button}
-              edge="end"
-              color="inherit"
-              onClick={() => setPage("add")}
-            >
-              <AddRounded />
-            </IconButton>
+            <div className={classes.wrapper}>
+              <IconButton
+                className={classes.button}
+                edge="start"
+                color="inherit"
+                onClick={() => setPage("authors")}
+              >
+                <PersonOutlineRounded />
+              </IconButton>
+              <IconButton
+                className={classes.button}
+                color="inherit"
+                onClick={() => setPage("books")}
+              >
+                <BookSharp />
+              </IconButton>
+              <IconButton
+                className={classes.button}
+                edge="end"
+                color="inherit"
+                onClick={() => setPage("add")}
+              >
+                <AddRounded />
+              </IconButton>
+            </div>
           </Container>
         </Toolbar>
       </AppBar>
