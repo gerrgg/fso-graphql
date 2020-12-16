@@ -1,4 +1,5 @@
 import React from "react";
+import Loading from "./Loading";
 import { ALL_BOOKS } from "../queries";
 import { useQuery } from "@apollo/client";
 
@@ -14,7 +15,7 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>
-      {result.loading ? <p>Loading...</p> : <Table books={books} />}
+      {result.loading ? <Loading /> : <Table books={books} />}
     </div>
   );
 };
@@ -30,7 +31,7 @@ const Table = ({ books }) => (
       {books.map((a) => (
         <tr key={a.title}>
           <td>{a.title}</td>
-          <td>{`${a.author ? a.author.name : "Anon"}`}</td>
+          <td>{`${a.author ? a.author.name : "Anonymous"}`}</td>
           <td>{a.published}</td>
         </tr>
       ))}
