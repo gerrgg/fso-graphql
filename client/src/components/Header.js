@@ -58,14 +58,6 @@ export default function ButtonAppBar({ setPage }) {
               >
                 <BookSharp />
               </IconButton>
-              <IconButton
-                className={classes.button}
-                edge="end"
-                color="inherit"
-                onClick={() => setPage("add")}
-              >
-                <AddRounded />
-              </IconButton>
             </div>
           </Container>
         </Toolbar>

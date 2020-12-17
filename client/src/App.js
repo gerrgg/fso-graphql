@@ -7,7 +7,7 @@ import NewBook from "./components/NewBook";
 import Header from "./components/Header";
 
 const App = () => {
-  const [page, setPage] = useState("add");
+  const [page, setPage] = useState("books");
 
   return (
     <React.Fragment>
@@ -18,8 +18,6 @@ const App = () => {
         <Authors show={page === "authors"} />
 
         <Books show={page === "books"} />
-
-        <NewBook show={page === "add"} />
       </Container>
     </React.Fragment>
   );

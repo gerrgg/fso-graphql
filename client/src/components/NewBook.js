@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewBook = (props) => {
+const NewBook = () => {
   const classes = useStyles();
   const [title, setTitle] = useState("");
   const [author, setAuhtor] = useState("");
@@ -42,10 +42,6 @@ const NewBook = (props) => {
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
-
-  if (!props.show) {
-    return null;
-  }
 
   const submit = async (event) => {
     event.preventDefault();
@@ -71,7 +67,7 @@ const NewBook = (props) => {
   return (
     <Box className={classes.root} component={Paper}>
       <Typography className={classes.title} variant="h6">
-        Edit Author
+        Add Book
       </Typography>
       <form onSubmit={submit}>
         <FormControl className={classes.formControl}>
@@ -118,7 +114,8 @@ const NewBook = (props) => {
           </FormControl>
           <Button
             className={classes.genreButton}
-            color="default"
+            variant="outlined"
+            color="secondary"
             size="small"
             onClick={addGenre}
           >
@@ -130,8 +127,8 @@ const NewBook = (props) => {
           <Button
             variant="contained"
             type="submit"
-            color="secondary"
-            size="medium"
+            color="primary"
+            size="large"
           >
             Create Book
           </Button>

@@ -2,6 +2,7 @@ import React from "react";
 import Loading from "./Loading";
 import { ALL_BOOKS } from "../queries";
 import { useQuery } from "@apollo/client";
+import NewBook from "../components/NewBook";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -53,7 +54,7 @@ const Books = (props) => {
         <Loading />
       ) : (
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={7}>
             <TableContainer component={Paper}>
               <Table className={classes.table}>
                 <TableHead>
@@ -79,12 +80,8 @@ const Books = (props) => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Box>
-              <Typography className={classes.title} variant="h6">
-                Add Book
-              </Typography>
-            </Box>
+          <Grid item xs={12} sm={5}>
+            <NewBook />
           </Grid>
         </Grid>
       )}
