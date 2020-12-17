@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditAuthor = ({ authors }) => {
+const EditAuthor = ({ authors, start, end }) => {
   const classes = useStyles();
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
 
   const [setAuthorBorn] = useMutation(SET_AUTHOR_BORN, {
-    refetchQueries: [{ query: ALL_AUTHORS }],
+    refetchQueries: [{ query: ALL_AUTHORS, variables: { start, end } }],
   });
 
   const submit = async (event) => {
@@ -74,7 +74,7 @@ const EditAuthor = ({ authors }) => {
               type="number"
               label="Born"
               value={born}
-              onChange={({ target }) => setBorn(target.value)}
+              onChange={({ target }) => setBorn(parseInt(target.value))}
             />
           </FormControl>
         </Box>

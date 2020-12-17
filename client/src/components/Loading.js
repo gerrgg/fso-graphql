@@ -1,18 +1,21 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { TableRow, TableCell } from "@material-ui/core";
 
-const Loading = () => (
-  <Grid container spacing={3}>
-    <Grid item xs={12} sm={8}>
-      <Skeleton />
-      <Skeleton />
-      <Skeleton />
-    </Grid>
-    <Grid item xs={12} sm={4}>
-      <Skeleton variant="rect" height={300} />
-    </Grid>
-  </Grid>
-);
+const Loading = ({ count }) => {
+  return [...Array(count)].map((_, index) => (
+    <TableRow key={index}>
+      <TableCell component="th" scope="row">
+        <Skeleton></Skeleton>
+      </TableCell>
+      <TableCell align="right">
+        <Skeleton></Skeleton>
+      </TableCell>
+      <TableCell align="right">
+        <Skeleton></Skeleton>
+      </TableCell>
+    </TableRow>
+  ));
+};
 
 export default Loading;

@@ -1,8 +1,14 @@
 import { gql } from "@apollo/client";
 
-export const ALL_AUTHORS = gql`
+export const AUTHOR_COUNT = gql`
   query {
-    allAuthors(start: 0, end: 10) {
+    authorCount
+  }
+`;
+
+export const ALL_AUTHORS = gql`
+  query paginate($start: Int, $end: Int) {
+    allAuthors(start: $start, end: $end) {
       name
       bookCount
       born
