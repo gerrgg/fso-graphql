@@ -33,8 +33,8 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(first: Int, author: String, genre: String): [Book!]
-    allAuthors(first: Int): [Author!]!
+    allBooks(start: Int, end: Int, author: String, genre: String): [Book!]
+    allAuthors(start: Int, end: Int): [Author!]!
     findAuthor(name: String!): Author
   }
 
@@ -73,14 +73,32 @@ const resolvers = {
         );
       }
 
-      // filter out books not in genre
-      if (args.first && books.length > args.first) {
-        books = books.slice(0, 10);
+      // paginate
+      if (args.start >= 0 && args.end) {
+        try {
+          books = books.slice(args.start, args.end);
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        }
       }
 
       return books;
     },
-    allAuthors: () => Author.find({}),
+    allAuthors: async (root, args) => {
+      let authors = await Author.find({});
+
+      if (args.start >= 0 && args.end) {
+        try {
+          authors = authors.slice(args.start, args.end);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      return authors;
+    },
     findAuthor: (root, args) => Author.findOne({ name: args.name }),
   },
 
