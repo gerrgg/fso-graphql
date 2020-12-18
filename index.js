@@ -10,7 +10,12 @@ const Author = require("./models/author");
 const User = require("./models/user");
 
 // graphql and ApolloServer
-const { ApolloServer, UserInputError, gql } = require("apollo-server");
+const {
+  ApolloServer,
+  UserInputError,
+  gql,
+  AuthenticationError,
+} = require("apollo-server");
 const user = require("./models/user");
 
 // connect to db
@@ -121,6 +126,8 @@ const resolvers = {
     allUsers: async (root, args) => User.find({}),
 
     findAuthor: (root, args) => Author.findOne({ name: args.name }),
+
+    me: (root, args, { currentUser }) => currentUser,
   },
 
   Author: {
@@ -142,8 +149,10 @@ const resolvers = {
       }
     },
 
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, { currentUser }) => {
       const author = await Author.findOne({ name: args.name });
+
+      if (!currentUser) throw new AuthenticationError("Not authenticated");
 
       if (!author) return null;
 
@@ -151,8 +160,10 @@ const resolvers = {
       return author.save();
     },
 
-    addBook: async (root, args) => {
+    addBook: async (root, args, { currentUser }) => {
       let author = await Author.findOne({ name: args.author });
+
+      if (!currentUser) throw new AuthenticationError("Not authenticated");
 
       if (!author) {
         author = new Author({ name: args.author, born: null });
@@ -197,6 +208,7 @@ const resolvers = {
         username: user.username,
         id: user._id,
       };
+      z;
 
       return { value: jwt.sign(userForToken, JWT_SECRET) };
     },
@@ -208,10 +220,10 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null;
-    if (auth && autho.toLowerCase().startsWith("bearer ")) {
+    if (auth && auth.toLowerCase().startsWith("bearer ")) {
       const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
       const currentUser = await User.findById(decodedToken.id);
-      return { createUser };
+      return { currentUser };
     }
   },
 });
