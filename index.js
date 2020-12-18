@@ -10,7 +10,8 @@ const Author = require("./models/author");
 const User = require("./models/user");
 
 // graphql and ApolloServer
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, UserInputError, gql } = require("apollo-server");
+const user = require("./models/user");
 
 // connect to db
 require("./utils/database");
@@ -34,7 +35,7 @@ const typeDefs = gql`
 
   type User {
     username: String!
-    favoriteGenre: String!
+    favoriteGenre: String
     id: ID!
   }
 
@@ -47,6 +48,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(start: Int, end: Int, author: String, genre: String): [Book!]
     allAuthors(start: Int, end: Int): [Author!]!
+    allUsers: [User!]
     findAuthor(name: String!): Author
     me: User
   }
@@ -63,7 +65,7 @@ const typeDefs = gql`
 
     editAuthor(name: String!, born: Int!): Author
 
-    createUser(username: String!): User
+    createUser(username: String!, favoriteGenre: String): User
     login(username: String!, password: String!): Token
   }
 `;
@@ -115,6 +117,9 @@ const resolvers = {
 
       return authors;
     },
+
+    allUsers: async (root, args) => User.find({}),
+
     findAuthor: (root, args) => Author.findOne({ name: args.name }),
   },
 
@@ -172,7 +177,7 @@ const resolvers = {
     },
 
     createUser: (root, args) => {
-      const user = new User({ username: args.username });
+      const user = new User({ ...args });
 
       return user.save().catch((error) => {
         throw new UserInputError(error.message, {
@@ -180,6 +185,7 @@ const resolvers = {
         });
       });
     },
+
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
 
