@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS, AUTHOR_COUNT } from "../queries";
 import EditAuthor from "./EditAuthor";
 import Loading from "./Loading";
-
+import Controls from "./Controls";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
@@ -16,10 +16,7 @@ import {
   TableRow,
   Box,
   Grid,
-  Button,
 } from "@material-ui/core";
-import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
-import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +75,14 @@ const Authors = (props) => {
       </Box>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} sm={7}>
+          <Controls
+            classes={classes}
+            authorCount={authorCount}
+            start={start}
+            end={end}
+            paginate={paginate}
+          />
           <TableContainer component={Paper}>
             <Table className={classes.table}>
               <TableHead>
@@ -90,7 +94,7 @@ const Authors = (props) => {
               </TableHead>
               <TableBody>
                 {result.loading ? (
-                  <Loading count={10} />
+                  <Loading count={perPage} />
                 ) : (
                   authors.map((a) => (
                     <TableRow key={a.name}>
@@ -105,31 +109,8 @@ const Authors = (props) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Box className={classes.box} display="flex">
-            <Button
-              color="primary"
-              disabled={start === 0}
-              startIcon={<ArrowBackIosRoundedIcon />}
-              onClick={() => paginate("prev")}
-            >
-              Prev
-            </Button>
-            <Button>
-              {authorCount === 0
-                ? "Loading results"
-                : `${start}-${end} of ${authorCount} Results`}
-            </Button>
-            <Button
-              color="primary"
-              disabled={end > authorCount}
-              endIcon={<ArrowForwardIosRoundedIcon />}
-              onClick={() => paginate("next")}
-            >
-              Next
-            </Button>
-          </Box>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={5}>
           <EditAuthor authors={authors} start={start} end={end} />
         </Grid>
       </Grid>

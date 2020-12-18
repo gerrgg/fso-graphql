@@ -112,7 +112,13 @@ const resolvers = {
   Mutation: {
     addAuthor: (root, args) => {
       const author = new Author({ ...args });
-      return author.save();
+      try {
+        return author.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
     },
 
     editAuthor: async (root, args) => {
@@ -129,12 +135,24 @@ const resolvers = {
 
       if (!author) {
         author = new Author({ name: args.author, born: null });
-        await author.save();
+        try {
+          await author.save();
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          });
+        }
       }
 
       const book = new Book({ ...args, author });
 
-      return book.save();
+      try {
+        return book.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
     },
   },
 };

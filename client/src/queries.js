@@ -6,6 +6,12 @@ export const AUTHOR_COUNT = gql`
   }
 `;
 
+export const BOOK_COUNT = gql`
+  query {
+    bookCount
+  }
+`;
+
 export const ALL_AUTHORS = gql`
   query paginate($start: Int, $end: Int) {
     allAuthors(start: $start, end: $end) {
@@ -17,8 +23,8 @@ export const ALL_AUTHORS = gql`
 `;
 
 export const ALL_BOOKS = gql`
-  query {
-    allBooks(start: 0, end: 10) {
+  query paginate($start: Int, $end: Int) {
+    allBooks(start: $start, end: $end) {
       title
       author {
         name
@@ -45,7 +51,9 @@ export const CREATE_BOOK = gql`
       genres: $genres
     ) {
       title
-      author
+      author {
+        name
+      }
       published
       genres
     }
