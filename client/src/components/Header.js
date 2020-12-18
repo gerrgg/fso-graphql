@@ -1,10 +1,10 @@
 import React from "react";
+import { useApolloClient } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
   Toolbar,
   Container,
-  Button,
   IconButton,
   Typography,
 } from "@material-ui/core";
@@ -12,7 +12,7 @@ import {
 import {
   PersonOutlineRounded,
   BookSharp,
-  AddRounded,
+  ExitToAppRounded,
 } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,8 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar({ setPage }) {
+export default function Header({ setPage, token, setToken }) {
   const classes = useStyles();
+  const client = useApolloClient();
+
+  const logout = () => {
+    setToken(null);
+    localStorage.clear();
+    client.resetStore();
+  };
 
   return (
     <div className={classes.root}>
@@ -58,6 +65,15 @@ export default function ButtonAppBar({ setPage }) {
               >
                 <BookSharp />
               </IconButton>
+              {token ? (
+                <IconButton
+                  className={classes.button}
+                  color="inherit"
+                  onClick={() => logout()}
+                >
+                  <ExitToAppRounded />
+                </IconButton>
+              ) : null}
             </div>
           </Container>
         </Toolbar>

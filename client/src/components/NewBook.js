@@ -23,9 +23,6 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     minWidth: 120,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
   genreButton: {
     marginLeft: theme.spacing(1),
   },
@@ -78,6 +75,7 @@ const NewBook = ({ notify }) => {
           <TextField
             value={title}
             label="Title"
+            required
             onChange={({ target }) => setTitle(target.value)}
           />
         </FormControl>
@@ -85,6 +83,7 @@ const NewBook = ({ notify }) => {
           <TextField
             label="Author"
             value={author}
+            required
             onChange={({ target }) => setAuhtor(target.value)}
           />
         </FormControl>
@@ -93,6 +92,7 @@ const NewBook = ({ notify }) => {
             label="Published"
             type="number"
             value={published}
+            required
             onChange={({ target }) => setPublished(Number(target.value))}
           />
         </FormControl>

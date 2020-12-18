@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { CssBaseline, Container } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import Header from "./components/Header";
+import LoginForm from "./components/LoginForm";
 
 const useStyles = makeStyles((theme) => ({
   notify: {
@@ -15,6 +16,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
+  const [token, setToken] = useState(
+    localStorage.getItem("library-user-token")
+      ? localStorage.getItem("library-user-token")
+      : null
+  );
+
   const [page, setPage] = useState("authors");
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -28,13 +35,18 @@ const App = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Header setPage={setPage} />
+      <Header setPage={setPage} token={token} setToken={setToken} />
 
       <Container maxWidth="md">
         <Notify errorMessage={errorMessage} />
-        <Authors show={page === "authors"} notify={notify} />
-
-        <Books show={page === "books"} notify={notify} />
+        {!token ? (
+          <LoginForm notify={notify} setToken={setToken} />
+        ) : (
+          <>
+            <Authors show={page === "authors"} notify={notify} />
+            <Books show={page === "books"} notify={notify} />
+          </>
+        )}
       </Container>
     </React.Fragment>
   );
