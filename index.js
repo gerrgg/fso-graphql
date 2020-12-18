@@ -1,11 +1,13 @@
 require("dotenv").config();
 
-// create unique ids
-const { v1: uuid } = require("uuid");
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 //models
 const Book = require("./models/book");
 const Author = require("./models/author");
+const User = require("./models/user");
 
 // graphql and ApolloServer
 const { ApolloServer, gql } = require("apollo-server");
@@ -30,12 +32,23 @@ const typeDefs = gql`
     id: ID!
   }
 
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int!
     allBooks(start: Int, end: Int, author: String, genre: String): [Book!]
     allAuthors(start: Int, end: Int): [Author!]!
     findAuthor(name: String!): Author
+    me: User
   }
 
   type Mutation {
@@ -49,6 +62,9 @@ const typeDefs = gql`
     addAuthor(name: String!, bookCount: Int!, born: Int): Author!
 
     editAuthor(name: String!, born: Int!): Author
+
+    createUser(username: String!): User
+    login(username: String!, password: String!): Token
   }
 `;
 
@@ -154,12 +170,44 @@ const resolvers = {
         });
       }
     },
+
+    createUser: (root, args) => {
+      const user = new User({ username: args.username });
+
+      return user.save().catch((error) => {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      });
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username });
+
+      if (!user || args.password !== "secred") {
+        throw new UserInputError("wrong credentials");
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      };
+
+      return { value: jwt.sign(userForToken, JWT_SECRET) };
+    },
   },
 };
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null;
+    if (auth && autho.toLowerCase().startsWith("bearer ")) {
+      const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET);
+      const currentUser = await User.findById(decodedToken.id);
+      return { createUser };
+    }
+  },
 });
 
 server.listen().then(({ url }) => {
