@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS, AUTHOR_COUNT } from "../queries";
 import EditAuthor from "./EditAuthor";
@@ -21,15 +20,18 @@ import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    margin: `${theme.spacing(2)}px 0`,
+    margin: `${theme.spacing(4)}px 0`,
   },
   box: {
     justifyContent: "space-between",
     marginTop: theme.spacing(2),
   },
+  cell: {
+    width: "33%",
+  },
 }));
 
-const Authors = (props) => {
+const Authors = ({ show, notify }) => {
   const classes = useStyles();
   const [start, setStart] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -51,7 +53,7 @@ const Authors = (props) => {
     }
   };
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
 
@@ -63,33 +65,30 @@ const Authors = (props) => {
 
   return (
     <div>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        className={classes.box}
-      >
-        <Typography className={classes.title} variant="h2">
-          {authorCount === 0 ? "Authors" : `${authorCount} Authors`}
-        </Typography>
-      </Box>
+      <Typography className={classes.title} variant="h2">
+        {authorCount === 0 ? "Authors" : `${authorCount} Authors`}
+      </Typography>
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
-          <Controls
-            classes={classes}
-            authorCount={authorCount}
-            start={start}
-            end={end}
-            paginate={paginate}
-          />
           <TableContainer component={Paper}>
+            <Controls
+              classes={classes}
+              authorCount={authorCount}
+              start={start}
+              end={end}
+              paginate={paginate}
+            />
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell align="right">Born</TableCell>
-                  <TableCell align="right">Number of Books)</TableCell>
+                  <TableCell className={classes.cell}>Name</TableCell>
+                  <TableCell className={classes.cell} align="right">
+                    Born
+                  </TableCell>
+                  <TableCell className={classes.cell} align="right">
+                    Number of Books)
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -98,11 +97,19 @@ const Authors = (props) => {
                 ) : (
                   authors.map((a) => (
                     <TableRow key={a.name}>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        className={classes.cell}
+                        component="th"
+                        scope="row"
+                      >
                         {a.name}
                       </TableCell>
-                      <TableCell align="right">{a.born}</TableCell>
-                      <TableCell align="right">{a.bookCount}</TableCell>
+                      <TableCell className={classes.cell} align="right">
+                        {a.born}
+                      </TableCell>
+                      <TableCell className={classes.cell} align="right">
+                        {a.bookCount}
+                      </TableCell>
                     </TableRow>
                   ))
                 )}
@@ -111,7 +118,12 @@ const Authors = (props) => {
           </TableContainer>
         </Grid>
         <Grid item xs={12} sm={5}>
-          <EditAuthor authors={authors} start={start} end={end} />
+          <EditAuthor
+            authors={authors}
+            start={start}
+            end={end}
+            notify={notify}
+          />
         </Grid>
       </Grid>
     </div>

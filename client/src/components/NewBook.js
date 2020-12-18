@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewBook = () => {
+const NewBook = ({ notify }) => {
   const classes = useStyles();
   const [title, setTitle] = useState("");
   const [author, setAuhtor] = useState("");
@@ -41,22 +41,22 @@ const NewBook = () => {
 
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    onError: (error) => {
+      notify(error.graphQLErrors[0].message);
+    },
   });
 
   const submit = async (event) => {
     event.preventDefault();
 
-    try {
+    if (title && author && published && genres)
       createBook({ variables: { title, author, published, genres } });
 
-      setTitle("");
-      setPublished("");
-      setAuhtor("");
-      setGenres([]);
-      setGenre("");
-    } catch (e) {
-      console.log(e);
-    }
+    setTitle("");
+    setPublished("");
+    setAuhtor("");
+    setGenres([]);
+    setGenre("");
   };
 
   const addGenre = () => {

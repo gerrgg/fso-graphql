@@ -20,15 +20,18 @@ import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    margin: `${theme.spacing(2)}px 0`,
+    margin: `${theme.spacing(4)}px 0`,
   },
   box: {
     justifyContent: "space-between",
     marginTop: theme.spacing(2),
   },
+  cell: {
+    width: "33%",
+  },
 }));
 
-const Books = (props) => {
+const Books = ({ show, notify }) => {
   const classes = useStyles();
   const [start, setStart] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -50,7 +53,7 @@ const Books = (props) => {
     }
   };
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
 
@@ -62,33 +65,30 @@ const Books = (props) => {
 
   return (
     <div>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        className={classes.box}
-      >
-        <Typography className={classes.title} variant="h2">
-          {bookCount === 0 ? "Books" : `${bookCount} Books`}
-        </Typography>
-      </Box>
+      <Typography className={classes.title} variant="h2">
+        {bookCount === 0 ? "Books" : `${bookCount} Books`}
+      </Typography>
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
-          <Controls
-            classes={classes}
-            authorCount={bookCount}
-            start={start}
-            end={end}
-            paginate={paginate}
-          />
           <TableContainer component={Paper}>
+            <Controls
+              classes={classes}
+              authorCount={bookCount}
+              start={start}
+              end={end}
+              paginate={paginate}
+            />
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Title</TableCell>
-                  <TableCell align="right">Author</TableCell>
-                  <TableCell align="right">Published</TableCell>
+                  <TableCell className={classes.cell}>Title</TableCell>
+                  <TableCell className={classes.cell} align="right">
+                    Author
+                  </TableCell>
+                  <TableCell className={classes.cell} align="right">
+                    Published
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -97,13 +97,19 @@ const Books = (props) => {
                 ) : (
                   books.map((b) => (
                     <TableRow key={b.title}>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        className={classes.cell}
+                        component="th"
+                        scope="row"
+                      >
                         {b.title}
                       </TableCell>
-                      <TableCell align="right">{`${
+                      <TableCell className={classes.cell} align="right">{`${
                         b.author ? b.author.name : "Anonymous"
                       }`}</TableCell>
-                      <TableCell align="right">{b.published}</TableCell>
+                      <TableCell className={classes.cell} align="right">
+                        {b.published}
+                      </TableCell>
                     </TableRow>
                   ))
                 )}
@@ -112,7 +118,7 @@ const Books = (props) => {
           </TableContainer>
         </Grid>
         <Grid item xs={12} sm={5}>
-          <NewBook />
+          <NewBook notify={notify} />
         </Grid>
       </Grid>
     </div>

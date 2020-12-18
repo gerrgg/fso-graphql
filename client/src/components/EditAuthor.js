@@ -28,20 +28,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditAuthor = ({ authors, start, end }) => {
+const EditAuthor = ({ authors, start, end, notify }) => {
   const classes = useStyles();
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
 
   const [setAuthorBorn] = useMutation(SET_AUTHOR_BORN, {
     refetchQueries: [{ query: ALL_AUTHORS, variables: { start, end } }],
+    onError: (error) => {
+      notify(error.graphQLErrors[0].message);
+    },
   });
 
   const submit = async (event) => {
     event.preventDefault();
 
     setAuthorBorn({ variables: { name, born } });
-
     setName("");
     setBorn("");
   };
@@ -57,6 +59,7 @@ const EditAuthor = ({ authors, start, end }) => {
             <InputLabel>Name</InputLabel>
             <Select
               value={name}
+              required
               onChange={({ target }) => setName(target.value)}
             >
               {authors.map((author, i) => (
@@ -65,15 +68,13 @@ const EditAuthor = ({ authors, start, end }) => {
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText id="my-helper-text">
-              "Pick an author - any author"
-            </FormHelperText>
           </FormControl>
           <FormControl className={classes.formControl}>
             <TextField
               type="number"
               label="Born"
               value={born}
+              required
               onChange={({ target }) => setBorn(parseInt(target.value))}
             />
           </FormControl>

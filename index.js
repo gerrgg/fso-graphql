@@ -16,6 +16,7 @@ const {
   gql,
   AuthenticationError,
 } = require("apollo-server");
+
 const user = require("./models/user");
 
 // connect to db
@@ -154,10 +155,14 @@ const resolvers = {
 
       if (!currentUser) throw new AuthenticationError("Not authenticated");
 
-      if (!author) return null;
-
-      author.born = args.born;
-      return author.save();
+      try {
+        author.born = args.born;
+        return author.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
     },
 
     addBook: async (root, args, { currentUser }) => {
