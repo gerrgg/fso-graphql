@@ -13,7 +13,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Box,
   Grid,
 } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const Authors = ({ show, notify }) => {
   const classes = useStyles();
   const [start, setStart] = useState(0);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage] = useState(10);
   const [end, setEnd] = useState(perPage);
 
   const authorCountResult = useQuery(AUTHOR_COUNT);

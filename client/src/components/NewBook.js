@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     minWidth: 120,
   },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
   genreButton: {
     marginLeft: theme.spacing(1),
   },
@@ -39,21 +42,27 @@ const NewBook = ({ notify }) => {
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
     onError: (error) => {
-      notify(error.graphQLErrors[0].message);
+      notify(error.graphQLErrors[0].message, "error");
+    },
+    update: (store, response) => {
+      console.log(response.data);
+      notify(
+        `${response.data.addBook.title} by ${response.data.addBook.author.name} added!`
+      );
     },
   });
 
   const submit = async (event) => {
     event.preventDefault();
 
-    if (title && author && published && genres)
+    if (title && author && published && genres) {
       createBook({ variables: { title, author, published, genres } });
-
-    setTitle("");
-    setPublished("");
-    setAuhtor("");
-    setGenres([]);
-    setGenre("");
+      setTitle("");
+      setPublished("");
+      setAuhtor("");
+      setGenres([]);
+      setGenre("");
+    }
   };
 
   const addGenre = () => {

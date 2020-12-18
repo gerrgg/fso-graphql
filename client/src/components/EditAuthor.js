@@ -8,7 +8,6 @@ import {
   InputLabel,
   Select,
   FormControl,
-  FormHelperText,
   MenuItem,
   Button,
   Typography,
@@ -33,10 +32,25 @@ const EditAuthor = ({ authors, start, end, notify }) => {
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
 
+  const query = {
+    query: ALL_AUTHORS,
+    variables: { start, end },
+  };
+
   const [setAuthorBorn] = useMutation(SET_AUTHOR_BORN, {
-    refetchQueries: [{ query: ALL_AUTHORS, variables: { start, end } }],
     onError: (error) => {
-      notify(error.graphQLErrors[0].message);
+      notify(error.graphQLErrors[0].message, "error");
+    },
+    update: (store, response) => {
+      const dataInStore = store.readQuery(query);
+
+      store.writeQuery({
+        ...query,
+        data: {
+          ...dataInStore,
+          allAuthors: [...dataInStore.allAuthors, response.data.editAuthor],
+        },
+      });
     },
   });
 

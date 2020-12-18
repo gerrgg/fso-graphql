@@ -13,7 +13,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Box,
   Grid,
 } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const Books = ({ show, notify }) => {
   const classes = useStyles();
   const [start, setStart] = useState(0);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage] = useState(10);
   const [end, setEnd] = useState(perPage);
 
   const bookCountResult = useQuery(BOOK_COUNT);
@@ -118,7 +117,7 @@ const Books = ({ show, notify }) => {
           </TableContainer>
         </Grid>
         <Grid item xs={12} sm={5}>
-          <NewBook notify={notify} />
+          <NewBook notify={notify} start={start} end={end} />
         </Grid>
       </Grid>
     </div>

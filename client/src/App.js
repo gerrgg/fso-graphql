@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { CssBaseline, Container } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
@@ -22,13 +22,18 @@ const App = () => {
       : null
   );
 
-  const [page, setPage] = useState("authors");
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [page, setPage] = useState("books");
 
-  const notify = (message) => {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [severity, setSeverity] = useState(null);
+
+  const notify = (message, severity) => {
     setErrorMessage(message);
+    setSeverity(severity);
+
     setTimeout(() => {
       setErrorMessage(null);
+      setSeverity(null);
     }, 5000);
   };
 
@@ -38,7 +43,7 @@ const App = () => {
       <Header setPage={setPage} token={token} setToken={setToken} />
 
       <Container maxWidth="md">
-        <Notify errorMessage={errorMessage} />
+        <Notify errorMessage={errorMessage} severity={severity} />
         {!token ? (
           <LoginForm notify={notify} setToken={setToken} />
         ) : (
@@ -52,14 +57,16 @@ const App = () => {
   );
 };
 
-const Notify = ({ errorMessage }) => {
+const Notify = ({ errorMessage, severity }) => {
   const classes = useStyles();
+
+  severity = severity ? severity : "success";
 
   if (!errorMessage) {
     return null;
   }
   return (
-    <Alert className={classes.notify} severity="error">
+    <Alert className={classes.notify} severity={severity}>
       {errorMessage}
     </Alert>
   );

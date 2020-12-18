@@ -34,7 +34,12 @@ const LoginForm = ({ notify, setToken }) => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
-      notify(error.graphQLErrors[0].message);
+      notify(error.graphQLErrors[0].message, "error");
+    },
+    update: (store, response) => {
+      notify("Login successful!");
+      setUsername("");
+      setPassword("");
     },
   });
 
@@ -48,10 +53,7 @@ const LoginForm = ({ notify, setToken }) => {
 
   const submit = async (event) => {
     event.preventDefault();
-
-    await login({ variables: { username, password } });
-    setUsername("");
-    setPassword("");
+    login({ variables: { username, password } });
   };
 
   return (
