@@ -92,7 +92,7 @@ const Authors = ({ show, notify }) => {
               </TableHead>
               <TableBody>
                 {result.loading ? (
-                  <Loading count={perPage} />
+                  <Loading rows={10} columns={3} />
                 ) : (
                   authors.map((a) => (
                     <TableRow key={a.name}>

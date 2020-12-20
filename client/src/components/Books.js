@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   cell: {
-    width: "33%",
+    width: "25%",
   },
 }));
 
@@ -86,13 +86,16 @@ const Books = ({ show, notify }) => {
                     Author
                   </TableCell>
                   <TableCell className={classes.cell} align="right">
+                    Genres
+                  </TableCell>
+                  <TableCell className={classes.cell} align="right">
                     Published
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {result.loading ? (
-                  <Loading count={10} />
+                  <Loading rows={10} columns={4} />
                 ) : (
                   books.map((b) => (
                     <TableRow key={b.title}>
@@ -106,6 +109,9 @@ const Books = ({ show, notify }) => {
                       <TableCell className={classes.cell} align="right">{`${
                         b.author ? b.author.name : "Anonymous"
                       }`}</TableCell>
+                      <TableCell className={classes.cell} align="right">
+                        {b.genres.join(", ")}
+                      </TableCell>
                       <TableCell className={classes.cell} align="right">
                         {b.published}
                       </TableCell>
