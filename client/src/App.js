@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 import { CssBaseline, Container } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,13 +18,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
+  // get token or set to null
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
       ? localStorage.getItem("library-user-token")
       : null
   );
-
-  const [page, setPage] = useState("books");
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [severity, setSeverity] = useState(null);
@@ -38,22 +39,25 @@ const App = () => {
   };
 
   return (
-    <React.Fragment>
+    <Router>
       <CssBaseline />
-      <Header setPage={setPage} token={token} setToken={setToken} />
-
+      <Header token={token} setToken={setToken} />
       <Container maxWidth="md">
         <Notify errorMessage={errorMessage} severity={severity} />
         {!token ? (
           <LoginForm notify={notify} setToken={setToken} />
         ) : (
-          <>
-            <Authors show={page === "authors"} notify={notify} />
-            <Books show={page === "books"} notify={notify} />
-          </>
+          <Switch>
+            <Route path="/authors">
+              <Authors notify={notify} />
+            </Route>
+            <Route path="/books">
+              <Books notify={notify} />
+            </Route>
+          </Switch>
         )}
       </Container>
-    </React.Fragment>
+    </Router>
   );
 };
 

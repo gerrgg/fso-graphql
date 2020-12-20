@@ -52,10 +52,6 @@ const Authors = ({ show, notify }) => {
     }
   };
 
-  if (!show) {
-    return null;
-  }
-
   const authors = result.loading ? [] : result.data.allAuthors;
 
   const authorCount = authorCountResult.loading

@@ -6,6 +6,8 @@ import { ALL_BOOKS, BOOK_COUNT } from "../queries";
 import NewBook from "../components/NewBook";
 import { makeStyles } from "@material-ui/core/styles";
 import {
+  ButtonGroup,
+  Button,
   Typography,
   Table,
   TableBody,
@@ -30,11 +32,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Books = ({ show, notify }) => {
+const Books = ({ notify }) => {
   const classes = useStyles();
   const [start, setStart] = useState(0);
   const [perPage] = useState(10);
   const [end, setEnd] = useState(perPage);
+  const [filter, setFilter] = useState(null);
 
   const bookCountResult = useQuery(BOOK_COUNT);
 
@@ -52,10 +55,6 @@ const Books = ({ show, notify }) => {
     }
   };
 
-  if (!show) {
-    return null;
-  }
-
   const books = result.loading ? [] : result.data.allBooks;
 
   const bookCount = bookCountResult.loading
@@ -70,6 +69,7 @@ const Books = ({ show, notify }) => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
+          <GenreFilter setFilter={setFilter} />
           <TableContainer component={Paper}>
             <Controls
               classes={classes}
@@ -127,6 +127,19 @@ const Books = ({ show, notify }) => {
         </Grid>
       </Grid>
     </div>
+  );
+};
+
+const GenreFilter = ({ setFilter }) => {
+  return (
+    <ButtonGroup color="primary" aria-label="outlined primary button group">
+      <Button onClick={() => setFilter("crime")}>Crime</Button>
+      <Button onClick={() => setFilter("horror")}>Horror</Button>
+      <Button onClick={() => setFilter("teen")}>Teen</Button>
+      <Button onClick={() => setFilter("design")}>Design</Button>
+      <Button onClick={() => setFilter("classic")}>Classic</Button>
+      <Button onClick={() => setFilter("refactoring")}>Refactoring</Button>
+    </ButtonGroup>
   );
 };
 

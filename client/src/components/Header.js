@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, Route } from "react-router-dom";
 import { useApolloClient } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   wrapper: {
     float: "right",
   },
+  menuButton: {
+    color: "inherit",
+  },
 }));
 
 export default function Header({ setPage, token, setToken }) {
@@ -50,21 +54,20 @@ export default function Header({ setPage, token, setToken }) {
               Library
             </Typography>
             <div className={classes.wrapper}>
-              <IconButton
-                className={classes.button}
-                edge="start"
-                color="inherit"
-                onClick={() => setPage("authors")}
-              >
-                <PersonOutlineRounded />
-              </IconButton>
-              <IconButton
-                className={classes.button}
-                color="inherit"
-                onClick={() => setPage("books")}
-              >
-                <BookSharp />
-              </IconButton>
+              <Link to="/authors" className={classes.menuButton}>
+                <IconButton
+                  className={classes.button}
+                  edge="start"
+                  color="inherit"
+                >
+                  <PersonOutlineRounded />
+                </IconButton>
+              </Link>
+              <Link to="/books" className={classes.menuButton}>
+                <IconButton className={classes.button} color="inherit">
+                  <BookSharp />
+                </IconButton>
+              </Link>
               {token ? (
                 <IconButton
                   className={classes.button}
