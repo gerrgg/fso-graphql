@@ -46,13 +46,11 @@ const EditUser = ({ notify }) => {
     },
     update: () => {
       notify("Update successful!");
-      history.push("/recommendations");
+      history.push("/");
     },
   });
 
   const user = result.loading ? null : result.data.me;
-
-  console.log(user);
 
   useEffect(() => {
     if (user && user.favoriteGenre) {

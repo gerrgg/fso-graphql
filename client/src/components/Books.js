@@ -54,6 +54,12 @@ const Books = ({ notify }) => {
     }
   };
 
+  const filterBooks = (genre) => {
+    setFilter(genre.toLowerCase());
+    setStart(0);
+    setEnd(10);
+  };
+
   let books = result.loading ? [] : result.data.allBooks;
 
   if (filter) {
@@ -68,7 +74,7 @@ const Books = ({ notify }) => {
           : `${books.length} books ${filter ? ` in "${filter}"` : ""}`}
       </Typography>
 
-      <GenreFilter classes={classes} setFilter={setFilter} filter={filter} />
+      <GenreFilter classes={classes} setFilter={filterBooks} filter={filter} />
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
