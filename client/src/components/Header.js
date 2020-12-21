@@ -12,7 +12,7 @@ import {
 
 import {
   PersonOutlineRounded,
-  BookSharp,
+  BookRounded,
   ExitToAppRounded,
   FaceRounded,
 } from "@material-ui/icons";
@@ -20,6 +20,11 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   logoWrapper: {
     textDecoration: "none",
@@ -52,15 +57,20 @@ export default function Header({ token, setToken }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="stati0c">
+      <AppBar position="static">
         <Toolbar>
-          <Container maxWidth="md">
+          <Container className={classes.container} maxWidth="md">
             <Link to="/" className={classes.logoWrapper}>
               <Typography className={classes.logo} variant="h6">
                 Library
               </Typography>
             </Link>
             <div className={classes.wrapper}>
+              <Link to="/" className={classes.menuButton}>
+                <IconButton className={classes.button} color="inherit">
+                  <BookRounded />
+                </IconButton>
+              </Link>
               <Link to="/authors" className={classes.menuButton}>
                 <IconButton
                   className={classes.button}

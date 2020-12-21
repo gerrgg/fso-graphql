@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_USER, EDIT_USER } from "../queries";
 import { makeStyles } from "@material-ui/core/styles";
+import Skeleton from "@material-ui/lab/Skeleton";
 import {
   Box,
   TextField,
@@ -19,12 +21,13 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     maxWidth: 400,
   },
+
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+  loading: {
+    width: "100%",
   },
 }));
 
@@ -48,7 +51,7 @@ const EditUser = ({ notify }) => {
     },
     update: (store, response) => {
       notify("Update successful!");
-      // redirect to recommendations
+      return <Redirect to="/" />;
     },
   });
 
@@ -62,7 +65,11 @@ const EditUser = ({ notify }) => {
   return (
     <Box className={classes.root} component={Paper}>
       {result.loading ? (
-        <p>Loading...</p>
+        <p>
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+        </p>
       ) : (
         <>
           <Typography className={classes.title} variant="h4">
