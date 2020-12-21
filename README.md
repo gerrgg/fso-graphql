@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./public/logo192.png" />
+<img src="/public/logo192.png" />
 </div>
 <h1 align="center">React Library</h1>
 
@@ -25,7 +25,7 @@ You have the following pages to explore throughout the application:
 
 ### Login Page
 
-<img src="./public/login-page.jpg" height="400" />
+<img src="/public/login-page.jpg" height="400" />
 
 The application requires you to login to do anything.
 
@@ -41,7 +41,7 @@ The password is <b><i>secred</i></b> so dont tell anytime!
 
 ### Recommendations Page
 
-<img src="./public/recommendations-page.jpg" height="400" />
+<img src="/public/recommendations-page.jpg" height="400" />
 
 The recommendations page is a simple graphQL query which takes a user's `favoriteGenre` and returns books in that genre.
 
@@ -81,7 +81,7 @@ export const RECOMMENDATIONS = gql`
 
 ### Edit User Page
 
-<img src="./public/edit-user-page.jpg" height="400" />
+<img src="/public/edit-user-page.jpg" height="400" />
 
 Having a recommendations page would be pretty pointless without having a somewhere for the logged in user to declare a `favoriteGenre`.
 
@@ -104,19 +104,19 @@ The `GET_USER` query is refetched and the user redirected back to the Recommenda
 
 ### Books Page
 
-<img src="./public/books-page.jpg" height="400" />
+<img src="/public/books-page.jpg" height="400" />
 
 Recommendations dont float your scrot'? Visit `/books/` to see the entire selection of test book data.
 
 #### Paginate Table
 
-<img src="./public/books-paginate.gif"  />
+<img src="/public/books-paginate.gif"  />
 
 This page (and author) includes paginate functionality which allows for all the action packed button clicking your app experience could desire. Go left, go right and go nuts!
 
 #### Genre Filter
 
-<img src="./public/genre-filter-books.gif"  />
+<img src="/public/genre-filter-books.gif"  />
 
 Paginate is cool, but what about filters? Well click the filter buttons of some of our hottest topics to get the inside scoop on the newest books.
 
