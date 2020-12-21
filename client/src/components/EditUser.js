@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_USER, EDIT_USER } from "../queries";
+import { useHistory, Link } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
+import { EDIT_USER, GET_USER } from "../queries";
 import { makeStyles } from "@material-ui/core/styles";
 import Skeleton from "@material-ui/lab/Skeleton";
 import {
@@ -33,27 +33,30 @@ const useStyles = makeStyles((theme) => ({
 
 const EditUser = ({ notify }) => {
   const classes = useStyles();
-  const result = useQuery(GET_USER);
-  const user = result.loading ? null : result.data.me;
+  const history = useHistory();
   const [favoriteGenre, setFavoriteGenre] = useState("");
 
-  useEffect(() => {
-    if (user && user.favoriteGenre) {
-      console.log(user);
-      setFavoriteGenre(user.favoriteGenre);
-    }
-  }, [user]);
+  const result = useQuery(GET_USER);
 
   const [editUser] = useMutation(EDIT_USER, {
+    refetchQueries: [{ query: GET_USER }],
     onError: (error) => {
       console.log(error);
       notify(error.graphQLErrors[0].message, "error");
     },
-    update: (store, response) => {
+    update: () => {
       notify("Update successful!");
-      return <Redirect to="/" />;
+      history.push("/recommendations");
     },
   });
+
+  const user = result.loading ? null : result.data.me;
+
+  useEffect(() => {
+    if (user && user.favoriteGenre) {
+      setFavoriteGenre(user.favoriteGenre);
+    }
+  }, user);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -64,7 +67,7 @@ const EditUser = ({ notify }) => {
 
   return (
     <Box className={classes.root} component={Paper}>
-      {result.loading ? (
+      {!user ? (
         <p>
           <Skeleton />
           <Skeleton />
@@ -87,7 +90,8 @@ const EditUser = ({ notify }) => {
                   onChange={({ target }) => setFavoriteGenre(target.value)}
                 />
                 <FormHelperText>
-                  We use this to offer personalized book recommendations.
+                  We use this to offer personalized book{" "}
+                  <Link to="/recommendations">recommendations</Link>.
                 </FormHelperText>
               </FormControl>
             </Box>

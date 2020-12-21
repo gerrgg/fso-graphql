@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "./queries";
+
 import { CssBaseline, Container } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,6 +14,7 @@ import Books from "./components/Books";
 import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
 import EditUser from "./components/EditUser";
+import Recommendations from "./components/Recommendations";
 
 const useStyles = makeStyles((theme) => ({
   notify: {
@@ -19,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
+  const result = useQuery(GET_USER);
+  const user = result.loading ? null : result.data.me;
+
   // get token or set to null
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
@@ -55,11 +62,14 @@ const App = () => {
             <Route path="/user">
               <EditUser notify={notify} />
             </Route>
+            <Route path="/books">
+              <Books notify={notify} />
+            </Route>
             <Route exact path="/">
               {!token ? (
                 <LoginForm notify={notify} setToken={setToken} />
               ) : (
-                <Books notify={notify} />
+                <Recommendations user={user} notify={notify} />
               )}
             </Route>
           </Switch>

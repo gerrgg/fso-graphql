@@ -94,3 +94,16 @@ export const EDIT_USER = gql`
     }
   }
 `;
+
+export const RECOMMENDATIONS = gql`
+  query recommendations($genre: String!) {
+    allBooks(genre: $genre) {
+      title
+      author {
+        name
+      }
+      genres
+      published
+    }
+  }
+`;

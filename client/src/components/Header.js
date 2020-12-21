@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   logo: {
+    fontFamily: "'Rock Salt', cursive",
     display: "inline",
     marginRight: theme.spacing(2),
   },
@@ -66,17 +67,17 @@ export default function Header({ token, setToken }) {
               </Typography>
             </Link>
             <div className={classes.wrapper}>
-              <Link to="/" className={classes.menuButton}>
-                <IconButton className={classes.button} color="inherit">
-                  <BookRounded />
-                </IconButton>
-              </Link>
-              <Link to="/authors" className={classes.menuButton}>
+              <Link to="/books" className={classes.menuButton}>
                 <IconButton
                   className={classes.button}
                   edge="start"
                   color="inherit"
                 >
+                  <BookRounded />
+                </IconButton>
+              </Link>
+              <Link to="/authors" className={classes.menuButton}>
+                <IconButton className={classes.button} edge="" color="inherit">
                   <PersonOutlineRounded />
                 </IconButton>
               </Link>
@@ -84,11 +85,16 @@ export default function Header({ token, setToken }) {
               {token ? (
                 <>
                   <Link to="/user" className={classes.menuButton}>
-                    <IconButton className={classes.button} color="inherit">
+                    <IconButton
+                      edge=""
+                      className={classes.button}
+                      color="inherit"
+                    >
                       <FaceRounded />
                     </IconButton>
                   </Link>
                   <IconButton
+                    edge="end"
                     className={classes.button}
                     color="inherit"
                     onClick={() => logout()}
