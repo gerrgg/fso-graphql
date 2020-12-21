@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { LOGIN } from "../queries";
+import { LOGIN, GET_USER } from "../queries";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginForm = ({ notify, setToken }) => {
   const classes = useStyles();
+  const history = useHistory();
 
   const [username, setUsername] = useState("greg");
   const [password, setPassword] = useState("secred");
@@ -38,8 +40,8 @@ const LoginForm = ({ notify, setToken }) => {
     },
     update: (store, response) => {
       notify("Login successful!");
-      setUsername("");
-      setPassword("");
+
+      // history.push("/");
     },
   });
 

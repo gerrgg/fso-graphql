@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLazyQuery, useQuery } from "@apollo/client";
-import { RECOMMENDATIONS } from "../queries";
+import { RECOMMENDATIONS, GET_USER } from "../queries";
 import Controls from "./Controls";
 import Loading from "./Loading";
 import { makeStyles } from "@material-ui/core/styles";
@@ -40,14 +40,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Recommendations = ({ user, notify }) => {
+const Recommendations = ({ notify }) => {
   const classes = useStyles();
 
-  const result = useQuery(RECOMMENDATIONS, {
-    variables: { genre: user ? user.favoriteGenre : "" },
-  });
+  const result = useQuery(GET_USER);
+  const [getRecommendations, recommendationResults] = useLazyQuery(
+    RECOMMENDATIONS
+  );
 
-  const recommendations = result.loading ? [] : result.data.allBooks;
+  const user = result.loading ? null : result.data.me;
+
+  useEffect(() => {
+    if (user && user.favoriteGenre) {
+      getRecommendations({ variables: { genre: user.favoriteGenre } });
+    }
+  }, [user]);
+
+  const recommendations = recommendationResults.data
+    ? recommendationResults.data.allBooks
+    : [];
 
   return (
     <div>

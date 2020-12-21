@@ -63,7 +63,7 @@ export default function Header({ token, setToken }) {
           <Container className={classes.container} maxWidth="md">
             <Link to="/" className={classes.logoWrapper}>
               <Typography className={classes.logo} variant="h6">
-                Library
+                <span role="img">📚</span> Library <span role="img">📚</span>
               </Typography>
             </Link>
             <div className={classes.wrapper}>

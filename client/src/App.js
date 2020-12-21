@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+// ROUTER
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+// GRAPHQL AND QUERIES
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "./queries";
 
+// MATERIAL-UI
 import { CssBaseline, Container } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 
+// COMPONENTS
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import Header from "./components/Header";
@@ -16,6 +20,7 @@ import LoginForm from "./components/LoginForm";
 import EditUser from "./components/EditUser";
 import Recommendations from "./components/Recommendations";
 
+//STYLES
 const useStyles = makeStyles((theme) => ({
   notify: {
     marginTop: theme.spacing(2),
@@ -23,9 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-  const result = useQuery(GET_USER);
-  const user = result.loading ? null : result.data.me;
-
   // get token or set to null
   const [token, setToken] = useState(
     localStorage.getItem("library-user-token")
@@ -66,11 +68,7 @@ const App = () => {
               <Books notify={notify} />
             </Route>
             <Route exact path="/">
-              {!token ? (
-                <LoginForm notify={notify} setToken={setToken} />
-              ) : (
-                <Recommendations user={user} notify={notify} />
-              )}
+              <Recommendations notify={notify} />
             </Route>
           </Switch>
         )}

@@ -52,6 +52,8 @@ const EditUser = ({ notify }) => {
 
   const user = result.loading ? null : result.data.me;
 
+  console.log(user);
+
   useEffect(() => {
     if (user && user.favoriteGenre) {
       setFavoriteGenre(user.favoriteGenre);
