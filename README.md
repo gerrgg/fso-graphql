@@ -1,7 +1,10 @@
 <div align="center">
-<img src="/public/logo192.png" />
+<img src="./client/public/logo192.png" height="50"/>
+<img src="./client/public/graphql.png" height="50"/>
+<img src="./client/public/apollo-client.png" height="50"/>
+<img src="./client/public/fso.jpg" height="50"/>
 </div>
-<h1 align="center">React Library</h1>
+<h1 align="center">React + GraphQL + Apollo Client - Library App</h1>
 
 ## Purpose
 
@@ -25,7 +28,7 @@ You have the following pages to explore throughout the application:
 
 ### Login Page
 
-<img src="/public/login-page.jpg" height="400" />
+<img src="./client/public/login-page.jpg" height="400" />
 
 The application requires you to login to do anything.
 
@@ -41,7 +44,7 @@ The password is <b><i>secred</i></b> so dont tell anytime!
 
 ### Recommendations Page
 
-<img src="/public/recommendations-page.jpg" height="400" />
+<img src="./client/public/recommendations-page.jpg" height="400" />
 
 The recommendations page is a simple graphQL query which takes a user's `favoriteGenre` and returns books in that genre.
 
@@ -81,7 +84,7 @@ export const RECOMMENDATIONS = gql`
 
 ### Edit User Page
 
-<img src="/public/edit-user-page.jpg" height="400" />
+<img src="./client/public/edit-user-page.jpg" height="400" />
 
 Having a recommendations page would be pretty pointless without having a somewhere for the logged in user to declare a `favoriteGenre`.
 
@@ -104,19 +107,19 @@ The `GET_USER` query is refetched and the user redirected back to the Recommenda
 
 ### Books Page
 
-<img src="/public/books-page.jpg" height="400" />
+<img src="./client/public/books-page.jpg" height="400" />
 
 Recommendations dont float your scrot'? Visit `/books/` to see the entire selection of test book data.
 
 #### Paginate Table
 
-<img src="/public/books-paginate.gif"  />
+<img src="./client/public/books-paginate.gif"  />
 
 This page (and author) includes paginate functionality which allows for all the action packed button clicking your app experience could desire. Go left, go right and go nuts!
 
 #### Genre Filter
 
-<img src="/public/genre-filter-books.gif"  />
+<img src="./client/public/genre-filter-books.gif"  />
 
 Paginate is cool, but what about filters? Well click the filter buttons of some of our hottest topics to get the inside scoop on the newest books.
 
