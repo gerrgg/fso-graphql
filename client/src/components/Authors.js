@@ -66,14 +66,14 @@ const Authors = ({ show, notify }) => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
+          <Controls
+            classes={classes}
+            authorCount={authorCount}
+            start={start}
+            end={end}
+            paginate={paginate}
+          />
           <TableContainer component={Paper}>
-            <Controls
-              classes={classes}
-              authorCount={authorCount}
-              start={start}
-              end={end}
-              paginate={paginate}
-            />
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>

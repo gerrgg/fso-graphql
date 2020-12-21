@@ -51,8 +51,12 @@ const App = () => {
             <Route path="/authors">
               <Authors notify={notify} />
             </Route>
-            <Route path="/books">
-              <Books notify={notify} />
+            <Route exact path="/">
+              {!token ? (
+                <LoginForm notify={notify} setToken={setToken} />
+              ) : (
+                <Books notify={notify} />
+              )}
             </Route>
           </Switch>
         )}

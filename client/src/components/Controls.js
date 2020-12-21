@@ -3,7 +3,8 @@ import { Button, Box } from "@material-ui/core";
 
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForward";
-const Controls = ({ classes, authorCount, start, end, paginate }) => (
+
+const Controls = ({ classes, authorCount, start, end, paginate, children }) => (
   <Box className={classes.box} display="flex">
     <Button
       color="primary"
@@ -14,9 +15,11 @@ const Controls = ({ classes, authorCount, start, end, paginate }) => (
       Prev
     </Button>
     <Button>
-      {authorCount === 0
-        ? "Loading results"
-        : `${start}-${end} of ${authorCount} Results`}
+      {authorCount === 0 ? (
+        <span role="emoji">Loading... 🤖</span>
+      ) : (
+        `${start}-${end} of ${authorCount} Results`
+      )}
     </Button>
     <Button
       color="primary"
@@ -26,6 +29,7 @@ const Controls = ({ classes, authorCount, start, end, paginate }) => (
     >
       Next
     </Button>
+    {children}
   </Box>
 );
 

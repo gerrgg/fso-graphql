@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  logoWrapper: {
+    textDecoration: "none",
+    color: "inherit",
+  },
   logo: {
     display: "inline",
     marginRight: theme.spacing(2),
@@ -35,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header({ setPage, token, setToken }) {
+export default function Header({ token, setToken }) {
   const classes = useStyles();
   const client = useApolloClient();
 
@@ -47,13 +51,20 @@ export default function Header({ setPage, token, setToken }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="stati0c">
         <Toolbar>
           <Container maxWidth="md">
-            <Typography className={classes.logo} variant="h6">
-              Library
-            </Typography>
+            <Link to="/" className={classes.logoWrapper}>
+              <Typography className={classes.logo} variant="h6">
+                Library
+              </Typography>
+            </Link>
             <div className={classes.wrapper}>
+              <Link to="/books" className={classes.menuButton}>
+                <IconButton className={classes.button} color="inherit">
+                  <BookSharp />
+                </IconButton>
+              </Link>
               <Link to="/authors" className={classes.menuButton}>
                 <IconButton
                   className={classes.button}
@@ -63,11 +74,7 @@ export default function Header({ setPage, token, setToken }) {
                   <PersonOutlineRounded />
                 </IconButton>
               </Link>
-              <Link to="/books" className={classes.menuButton}>
-                <IconButton className={classes.button} color="inherit">
-                  <BookSharp />
-                </IconButton>
-              </Link>
+
               {token ? (
                 <IconButton
                   className={classes.button}

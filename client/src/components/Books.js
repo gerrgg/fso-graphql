@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
 import Controls from "./Controls";
 import Loading from "./Loading";
-import { ALL_BOOKS, BOOK_COUNT } from "../queries";
+import { ALL_BOOKS } from "../queries";
 import NewBook from "../components/NewBook";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -17,6 +17,7 @@ import {
   TableRow,
   Grid,
 } from "@material-ui/core";
+import ClearIcon from "@material-ui/icons/Clear";
 import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   cell: {
     width: "25%",
   },
+  filter: {
+    margin: `${theme.spacing(2)}px auto`,
+  },
 }));
 
 const Books = ({ notify }) => {
@@ -37,13 +41,8 @@ const Books = ({ notify }) => {
   const [start, setStart] = useState(0);
   const [perPage] = useState(10);
   const [end, setEnd] = useState(perPage);
-  const [filter, setFilter] = useState(null);
-
-  const bookCountResult = useQuery(BOOK_COUNT);
-
-  const result = useQuery(ALL_BOOKS, {
-    variables: { start, end },
-  });
+  const [filter, setFilter] = useState("");
+  const result = useQuery(ALL_BOOKS);
 
   const paginate = (direction) => {
     if (direction === "prev") {
@@ -55,25 +54,28 @@ const Books = ({ notify }) => {
     }
   };
 
-  const books = result.loading ? [] : result.data.allBooks;
+  let books = result.loading ? [] : result.data.allBooks;
 
-  const bookCount = bookCountResult.loading
-    ? 0
-    : bookCountResult.data.bookCount;
+  if (filter) {
+    books = books.filter((b) => b.genres.includes(filter));
+  }
 
   return (
     <div>
       <Typography className={classes.title} variant="h2">
-        {bookCount === 0 ? "Books" : `${bookCount} Books`}
+        {books.length === 0
+          ? "Books"
+          : `${books.length} books ${filter ? ` in "${filter}"` : ""}`}
       </Typography>
+
+      <GenreFilter classes={classes} setFilter={setFilter} filter={filter} />
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
-          <GenreFilter setFilter={setFilter} />
           <TableContainer component={Paper}>
             <Controls
               classes={classes}
-              authorCount={bookCount}
+              authorCount={books.length}
               start={start}
               end={end}
               paginate={paginate}
@@ -97,7 +99,7 @@ const Books = ({ notify }) => {
                 {result.loading ? (
                   <Loading rows={10} columns={4} />
                 ) : (
-                  books.map((b) => (
+                  books.slice(start, end).map((b) => (
                     <TableRow key={b.title}>
                       <TableCell
                         className={classes.cell}
@@ -130,15 +132,43 @@ const Books = ({ notify }) => {
   );
 };
 
-const GenreFilter = ({ setFilter }) => {
+const GenreFilter = ({ setFilter, filter, classes }) => {
+  const handleClick = (genre) => {
+    setFilter(genre.toLowerCase());
+  };
+
+  const genres = [
+    "Crime",
+    "Horror",
+    "Teen",
+    "Database",
+    "Classic",
+    "Refactoring",
+  ];
+
   return (
-    <ButtonGroup color="primary" aria-label="outlined primary button group">
-      <Button onClick={() => setFilter("crime")}>Crime</Button>
-      <Button onClick={() => setFilter("horror")}>Horror</Button>
-      <Button onClick={() => setFilter("teen")}>Teen</Button>
-      <Button onClick={() => setFilter("design")}>Design</Button>
-      <Button onClick={() => setFilter("classic")}>Classic</Button>
-      <Button onClick={() => setFilter("refactoring")}>Refactoring</Button>
+    <ButtonGroup
+      color="primary"
+      aria-label="outlined primary button group"
+      className={classes.filter}
+    >
+      {genres.map((g) => (
+        <Button
+          variant={g.toLowerCase() === filter ? "contained" : null}
+          onClick={({ target }) => handleClick(target.textContent)}
+        >
+          {g}
+        </Button>
+      ))}
+      <Button
+        variant="contained"
+        color="secondary"
+        disabled={filter === ""}
+        endIcon={<ClearIcon />}
+        onClick={() => setFilter("")}
+      >
+        Clear
+      </Button>
     </ButtonGroup>
   );
 };
