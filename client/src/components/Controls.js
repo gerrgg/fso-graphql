@@ -12,11 +12,13 @@ const Controls = ({ classes, authorCount, start, end, paginate, children }) => (
       startIcon={<ArrowBackIosRoundedIcon />}
       onClick={() => paginate("prev")}
     >
-      Prev
+      Previous
     </Button>
     <Button>
       {authorCount === 0 ? (
-        <span role="emoji">Loading... 🤖</span>
+        <span role="img" aria-label="a robot going beep boop">
+          Loading... 🤖
+        </span>
       ) : (
         `${start}-${end} of ${authorCount} Results`
       )}

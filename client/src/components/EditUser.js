@@ -58,7 +58,7 @@ const EditUser = ({ notify }) => {
     if (user && user.favoriteGenre) {
       setFavoriteGenre(user.favoriteGenre);
     }
-  }, user);
+  }, [user]);
 
   const submit = async (event) => {
     event.preventDefault();

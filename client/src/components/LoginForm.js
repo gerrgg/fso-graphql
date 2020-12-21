@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { LOGIN, GET_USER } from "../queries";
+import { LOGIN } from "../queries";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
@@ -40,8 +40,7 @@ const LoginForm = ({ notify, setToken }) => {
     },
     update: (store, response) => {
       notify("Login successful!");
-
-      // history.push("/");
+      history.push("/");
     },
   });
 
@@ -51,7 +50,7 @@ const LoginForm = ({ notify, setToken }) => {
       setToken(token);
       localStorage.setItem("library-user-token", token);
     }
-  }, [result.data]);
+  }, [result.data, setToken]);
 
   const submit = async (event) => {
     event.preventDefault();

@@ -3,14 +3,14 @@ import React, { useState } from "react";
 // ROUTER
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-// GRAPHQL AND QUERIES
-import { useQuery } from "@apollo/client";
-import { GET_USER } from "./queries";
-
 // MATERIAL-UI
 import { CssBaseline, Container } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createMuiTheme,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 
 // COMPONENTS
 import Authors from "./components/Authors";
@@ -19,6 +19,18 @@ import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
 import EditUser from "./components/EditUser";
 import Recommendations from "./components/Recommendations";
+
+// THEME
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#263238",
+    },
+    secondary: {
+      main: "#EF5350",
+    },
+  },
+});
 
 //STYLES
 const useStyles = makeStyles((theme) => ({
@@ -50,29 +62,31 @@ const App = () => {
 
   return (
     <Router>
-      <CssBaseline />
-      <Header token={token} setToken={setToken} />
-      <Container maxWidth="md">
-        <Notify errorMessage={errorMessage} severity={severity} />
-        {!token ? (
-          <LoginForm notify={notify} setToken={setToken} />
-        ) : (
-          <Switch>
-            <Route path="/authors">
-              <Authors notify={notify} />
-            </Route>
-            <Route path="/user">
-              <EditUser notify={notify} />
-            </Route>
-            <Route path="/books">
-              <Books notify={notify} />
-            </Route>
-            <Route exact path="/">
-              <Recommendations notify={notify} />
-            </Route>
-          </Switch>
-        )}
-      </Container>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Header token={token} setToken={setToken} />
+        <Container maxWidth="md">
+          <Notify errorMessage={errorMessage} severity={severity} />
+          {!token ? (
+            <LoginForm notify={notify} setToken={setToken} />
+          ) : (
+            <Switch>
+              <Route path="/authors">
+                <Authors notify={notify} />
+              </Route>
+              <Route path="/user">
+                <EditUser notify={notify} />
+              </Route>
+              <Route path="/books">
+                <Books notify={notify} />
+              </Route>
+              <Route exact path="/">
+                <Recommendations notify={notify} />
+              </Route>
+            </Switch>
+          )}
+        </Container>
+      </ThemeProvider>
     </Router>
   );
 };

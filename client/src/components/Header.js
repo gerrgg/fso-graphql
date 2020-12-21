@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useApolloClient } from "@apollo/client";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -12,7 +12,7 @@ import {
 
 import {
   PersonOutlineRounded,
-  BookRounded,
+  MenuBookRounded,
   ExitToAppRounded,
   FaceRounded,
 } from "@material-ui/icons";
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "'Rock Salt', cursive",
     display: "inline",
     marginRight: theme.spacing(2),
+    wordWrap: "none",
   },
   button: {
     marginRight: theme.spacing(1),
@@ -63,7 +64,13 @@ export default function Header({ token, setToken }) {
           <Container className={classes.container} maxWidth="md">
             <Link to="/" className={classes.logoWrapper}>
               <Typography className={classes.logo} variant="h6">
-                <span role="img">📚</span> Library <span role="img">📚</span>
+                <span role="img" aria-label="pile of books">
+                  📚
+                </span>{" "}
+                Library{" "}
+                <span role="img" aria-label="pile of books">
+                  📚
+                </span>
               </Typography>
             </Link>
             <div className={classes.wrapper}>
@@ -73,7 +80,7 @@ export default function Header({ token, setToken }) {
                   edge="start"
                   color="inherit"
                 >
-                  <BookRounded />
+                  <MenuBookRounded />
                 </IconButton>
               </Link>
               <Link to="/authors" className={classes.menuButton}>

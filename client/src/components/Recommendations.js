@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { RECOMMENDATIONS, GET_USER } from "../queries";
-import Controls from "./Controls";
 import Loading from "./Loading";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
-  ButtonGroup,
   Button,
   Typography,
   Table,
@@ -54,7 +52,7 @@ const Recommendations = ({ notify }) => {
     if (user && user.favoriteGenre) {
       getRecommendations({ variables: { genre: user.favoriteGenre } });
     }
-  }, [user]);
+  }, [user, getRecommendations]);
 
   const recommendations = recommendationResults.data
     ? recommendationResults.data.allBooks
@@ -101,7 +99,7 @@ const Recommendations = ({ notify }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {result.loading ? (
+                {!recommendations.length ? (
                   <Loading rows={10} columns={4} />
                 ) : (
                   recommendations.map((b) => (

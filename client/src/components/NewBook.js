@@ -45,7 +45,6 @@ const NewBook = ({ notify }) => {
       notify(error.graphQLErrors[0].message, "error");
     },
     update: (store, response) => {
-      console.log(response.data);
       notify(
         `${response.data.addBook.title} by ${response.data.addBook.author.name} added!`
       );
@@ -127,7 +126,7 @@ const NewBook = ({ notify }) => {
           </FormControl>
           <Button
             className={classes.genreButton}
-            variant="outlined"
+            variant="contained"
             color="secondary"
             size="small"
             onClick={addGenre}

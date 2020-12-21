@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { ALL_AUTHORS, AUTHOR_COUNT } from "../queries";
+import { ALL_AUTHORS } from "../queries";
 import EditAuthor from "./EditAuthor";
 import Loading from "./Loading";
 import Controls from "./Controls";
