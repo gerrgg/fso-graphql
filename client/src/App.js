@@ -10,6 +10,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
+import EditUser from "./components/EditUser";
 
 const useStyles = makeStyles((theme) => ({
   notify: {
@@ -50,6 +51,9 @@ const App = () => {
           <Switch>
             <Route path="/authors">
               <Authors notify={notify} />
+            </Route>
+            <Route path="/user">
+              <EditUser notify={notify} />
             </Route>
             <Route exact path="/">
               {!token ? (

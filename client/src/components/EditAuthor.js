@@ -34,7 +34,6 @@ const EditAuthor = ({ authors, start, end, notify }) => {
 
   const query = {
     query: ALL_AUTHORS,
-    variables: { start, end },
   };
 
   const [setAuthorBorn] = useMutation(SET_AUTHOR_BORN, {

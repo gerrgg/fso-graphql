@@ -36,11 +36,7 @@ const Authors = ({ show, notify }) => {
   const [perPage] = useState(10);
   const [end, setEnd] = useState(perPage);
 
-  const authorCountResult = useQuery(AUTHOR_COUNT);
-
-  const result = useQuery(ALL_AUTHORS, {
-    variables: { start, end },
-  });
+  const result = useQuery(ALL_AUTHORS);
 
   const paginate = (direction) => {
     if (direction === "prev") {
@@ -54,21 +50,17 @@ const Authors = ({ show, notify }) => {
 
   const authors = result.loading ? [] : result.data.allAuthors;
 
-  const authorCount = authorCountResult.loading
-    ? 0
-    : authorCountResult.data.authorCount;
-
   return (
     <div>
       <Typography className={classes.title} variant="h2">
-        {authorCount === 0 ? "Authors" : `${authorCount} Authors`}
+        {authors.length === 0 ? "Authors" : `${authors.length} Authors`}
       </Typography>
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
           <Controls
             classes={classes}
-            authorCount={authorCount}
+            authorCount={authors.length}
             start={start}
             end={end}
             paginate={paginate}
@@ -82,7 +74,7 @@ const Authors = ({ show, notify }) => {
                     Born
                   </TableCell>
                   <TableCell className={classes.cell} align="right">
-                    Number of Books)
+                    Number of Books
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -90,7 +82,7 @@ const Authors = ({ show, notify }) => {
                 {result.loading ? (
                   <Loading rows={10} columns={3} />
                 ) : (
-                  authors.map((a) => (
+                  authors.slice(start, end).map((a) => (
                     <TableRow key={a.name}>
                       <TableCell
                         className={classes.cell}

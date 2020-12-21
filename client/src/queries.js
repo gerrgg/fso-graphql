@@ -13,8 +13,8 @@ export const BOOK_COUNT = gql`
 `;
 
 export const ALL_AUTHORS = gql`
-  query paginate($start: Int, $end: Int) {
-    allAuthors(start: $start, end: $end) {
+  query {
+    allAuthors {
       name
       bookCount
       born
@@ -23,8 +23,8 @@ export const ALL_AUTHORS = gql`
 `;
 
 export const ALL_BOOKS = gql`
-  query paginate($start: Int, $end: Int) {
-    allBooks(start: $start, end: $end) {
+  query {
+    allBooks {
       title
       author {
         name
@@ -73,6 +73,24 @@ export const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
       value
+    }
+  }
+`;
+
+export const GET_USER = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+    }
+  }
+`;
+
+export const EDIT_USER = gql`
+  mutation editUser($favoriteGenre: String!) {
+    editUser(favoriteGenre: $favoriteGenre) {
+      username
+      favoriteGenre
     }
   }
 `;

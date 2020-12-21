@@ -69,7 +69,9 @@ const typeDefs = gql`
 
     addAuthor(name: String!, bookCount: Int!, born: Int): Author!
 
-    editAuthor(name: String!, born: Int!): Author
+    editAuthor(name: String!, born: Int!): Author!
+
+    editUser(favoriteGenre: String!): User!
 
     createUser(username: String!, favoriteGenre: String): User
     login(username: String!, password: String!): Token
@@ -158,6 +160,21 @@ const resolvers = {
       try {
         author.born = args.born;
         return author.save();
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
+      }
+    },
+
+    editUser: async (root, args, { currentUser }) => {
+      if (!currentUser) throw new AuthenticationError("Not authenticated");
+
+      const user = await User.findById(currentUser._id);
+
+      try {
+        user.favoriteGenre = args.favoriteGenre;
+        return user.save();
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,

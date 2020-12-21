@@ -14,6 +14,7 @@ import {
   PersonOutlineRounded,
   BookSharp,
   ExitToAppRounded,
+  FaceRounded,
 } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -60,11 +61,6 @@ export default function Header({ token, setToken }) {
               </Typography>
             </Link>
             <div className={classes.wrapper}>
-              <Link to="/books" className={classes.menuButton}>
-                <IconButton className={classes.button} color="inherit">
-                  <BookSharp />
-                </IconButton>
-              </Link>
               <Link to="/authors" className={classes.menuButton}>
                 <IconButton
                   className={classes.button}
@@ -76,13 +72,20 @@ export default function Header({ token, setToken }) {
               </Link>
 
               {token ? (
-                <IconButton
-                  className={classes.button}
-                  color="inherit"
-                  onClick={() => logout()}
-                >
-                  <ExitToAppRounded />
-                </IconButton>
+                <>
+                  <Link to="/user" className={classes.menuButton}>
+                    <IconButton className={classes.button} color="inherit">
+                      <FaceRounded />
+                    </IconButton>
+                  </Link>
+                  <IconButton
+                    className={classes.button}
+                    color="inherit"
+                    onClick={() => logout()}
+                  >
+                    <ExitToAppRounded />
+                  </IconButton>
+                </>
               ) : null}
             </div>
           </Container>
