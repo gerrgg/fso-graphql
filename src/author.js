@@ -8,13 +8,14 @@ module.exports = {
     born: Int
     id: ID!
   }`,
-  Author: {
-    bookCount: async (root) => {
-      const author = await Author.findOne({ name: root.name });
-      return author.books ? author.books.length : 0;
-    },
-  },
+
   resolvers: {
+    Author: {
+      bookCount: async (root) => {
+        const author = await Author.findOne({ name: root.name });
+        return author.books ? author.books.length : 0;
+      },
+    },
     Query: {
       authorCount: () => Author.collection.countDocuments(),
 

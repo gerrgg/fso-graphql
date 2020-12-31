@@ -36,6 +36,7 @@ const LoginForm = ({ notify, setToken }) => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
+      console.log(error);
       notify(error.graphQLErrors[0].message, "error");
     },
     update: (store, response) => {
