@@ -1,32 +1,12 @@
-const { gql } = require("apollo-server");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
+const resolvers = require("./resolvers");
 
-// Schema
-const schema = gql`
-  type Book {
-    title: String!
-    author: Author
-    published: String!
-    genres: [String]!
-    id: ID!
-  }
+const Book = require("./book");
+const Author = require("./author");
+const User = require("./user");
+const Token = require("./token");
 
-  type Author {
-    name: String
-    bookCount: Int!
-    born: Int
-    id: ID!
-  }
-
-  type User {
-    username: String!
-    favoriteGenre: String
-    id: ID!
-  }
-
-  type Token {
-    value: String!
-  }
-
+const Query = `
   type Query {
     bookCount: Int!
     authorCount: Int!
@@ -36,7 +16,9 @@ const schema = gql`
     findAuthor(name: String!): Author
     me: User
   }
+`;
 
+const Mutation = `
   type Mutation {
     addBook(
       title: String!
@@ -53,7 +35,11 @@ const schema = gql`
 
     createUser(username: String!, favoriteGenre: String): User
     login(username: String!, password: String!): Token
-  }
-`;
+  }`;
+
+const schema = makeExecutableSchema({
+  typeDefs: [Query, Mutation, Author, Book, User, Token],
+  resolvers,
+});
 
 module.exports = schema;
