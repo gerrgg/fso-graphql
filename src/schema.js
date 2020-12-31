@@ -1,10 +1,15 @@
+const { merge } = require("lodash");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
+
+const { typeDef: Book, resolvers: bookResolvers } = require("./book");
+const { typeDef: Author, resolvers: authorResolvers } = require("./author");
+const { typeDef: User, resolvers: userResolvers } = require("./user");
 const resolvers = require("./resolvers");
 
-const Book = require("./book");
-const Author = require("./author");
-const User = require("./user");
-const Token = require("./token");
+const Token = `
+  type Token {
+    value: String!
+  }`;
 
 const Query = `
   type Query {
@@ -39,7 +44,7 @@ const Mutation = `
 
 const schema = makeExecutableSchema({
   typeDefs: [Query, Mutation, Author, Book, User, Token],
-  resolvers,
+  resolvers: merge(resolvers, bookResolvers, authorResolvers, userResolvers),
 });
 
 module.exports = schema;
