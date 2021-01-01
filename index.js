@@ -31,6 +31,8 @@ app.use(cors());
 app.use(express.static("build"));
 server.applyMiddleware({ app, path: "/api" });
 
-app.listen({ port: process.env.PORT || 4000 }, () =>
+const PORT = process.env.PORT || 4000;
+
+app.listen({ port: PORT }, () =>
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 );

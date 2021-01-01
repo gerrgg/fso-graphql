@@ -84,7 +84,11 @@ export default function Header({ token, setToken }) {
                 </IconButton>
               </Link>
               <Link to="/authors" className={classes.menuButton}>
-                <IconButton className={classes.button} edge="" color="inherit">
+                <IconButton
+                  className={classes.button}
+                  edge="start"
+                  color="inherit"
+                >
                   <PersonOutlineRounded />
                 </IconButton>
               </Link>
@@ -93,9 +97,9 @@ export default function Header({ token, setToken }) {
                 <>
                   <Link to="/user" className={classes.menuButton}>
                     <IconButton
-                      edge=""
                       className={classes.button}
                       color="inherit"
+                      edge="start"
                     >
                       <FaceRounded />
                     </IconButton>
